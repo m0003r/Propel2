@@ -1926,6 +1926,19 @@ class ModelCriteria extends BaseModelCriteria
             throw new UnknownModelException(sprintf('Unknown model, alias or table "%s"', $prefix));
         }
 
+        return $this->getColumnFromTableMap($prefix, $phpName, $tableMap, $failSilently);
+    }
+
+    /**
+     * @param string $prefix
+     * @param string $phpName
+     * @param TableMap $tableMap
+     * @param bool $failSilently
+     *
+     * @return array
+     */
+    protected function getColumnFromTableMap($prefix, $phpName, $tableMap, $failSilently = true)
+    {
         if ($tableMap->hasColumnByPhpName($phpName)) {
             $column = $tableMap->getColumnByPhpName($phpName);
             if (isset($this->aliases[$prefix])) {
@@ -1988,6 +2001,8 @@ class ModelCriteria extends BaseModelCriteria
         return parent::doSelect($con);
     }
 
+
+
     public function configureSelectColumns()
     {
         if (is_null($this->select)) {
@@ -2021,8 +2036,6 @@ class ModelCriteria extends BaseModelCriteria
             }
         }
     }
-
-
 
     /**
      * Special case for subquery columns
